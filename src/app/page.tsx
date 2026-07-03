@@ -50,7 +50,7 @@ export default function Home() {
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
           Five Scholé Teams concepts compete for simulated buyer traffic. A
           bandit finds the winning <em>why</em>, an interpretable model attributes{' '}
-          <em>which genes</em> earned the revenue, and the system breeds a better
+          <em>which genes</em>{' '}earned the revenue, and the system breeds a better
           page — then explains itself. It&rsquo;s{' '}
           <span className="text-ink">knowledge tracing, pointed at the market.</span>
         </p>
