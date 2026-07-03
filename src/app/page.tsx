@@ -5,10 +5,16 @@
 import Link from 'next/link';
 import { SEED_VARIANTS, HEADLINE_COPY, CTA_COPY } from '@/core/genome';
 
-const DELIVERABLES = [
-  { n: 1, title: 'Initial versions', desc: 'Five real Scholé Teams pages, each a different "why".', live: true },
+const DELIVERABLES: {
+  n: number;
+  title: string;
+  desc: string;
+  live: boolean;
+  href?: string;
+}[] = [
+  { n: 1, title: 'Initial versions', desc: 'Six real Scholé Teams pages, each a different "why".', live: true, href: '/#variants' },
   { n: 2, title: 'How pages were compared', desc: 'The experiment design + live traffic allocation.', live: false },
-  { n: 3, title: 'Simulated behavior', desc: 'Section-level engagement per variant.', live: false },
+  { n: 3, title: 'Simulated behavior', desc: 'Section-level engagement + revenue per variant.', live: true, href: '/lab/behavior' },
   { n: 4, title: 'Which performed better', desc: 'Leaderboard with confidence intervals + regret.', live: false },
   { n: 5, title: 'New generated variation', desc: "The system's informed offspring page.", live: false },
   { n: 6, title: 'What changed & why', desc: 'The interpreter’s plain-language explanation.', live: false },
@@ -48,7 +54,7 @@ export default function Home() {
           A landing page that learns.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
-          Five Scholé Teams concepts compete for simulated buyer traffic. A
+          Six Scholé Teams concepts compete for simulated buyer traffic. A
           bandit finds the winning <em>why</em>, an interpretable model attributes{' '}
           <em>which genes</em>{' '}earned the revenue, and the system breeds a better
           page — then explains itself. It&rsquo;s{' '}
@@ -59,11 +65,14 @@ export default function Home() {
             href="#variants"
             className="inline-flex items-center rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white hover:bg-brand-hover"
           >
-            See the five concepts
+            See the six concepts
           </a>
-          <span className="inline-flex items-center rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-muted">
-            Lab dashboard — building
-          </span>
+          <Link
+            href="/lab/behavior"
+            className="inline-flex items-center rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-ink hover:border-brand"
+          >
+            Open the lab →
+          </Link>
         </div>
       </section>
 
@@ -74,31 +83,46 @@ export default function Home() {
             What this app lets you see
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {DELIVERABLES.map((d) => (
-              <div
-                key={d.n}
-                className="rounded-2xl border border-line bg-surface p-5"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="tnum text-sm font-semibold text-muted">
-                    {String(d.n).padStart(2, '0')}
-                  </span>
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
-                      d.live
-                        ? 'bg-positive/10 text-positive'
-                        : 'bg-line text-muted'
-                    }`}
-                  >
-                    {d.live ? 'live' : 'building'}
-                  </span>
+            {DELIVERABLES.map((d) => {
+              const inner = (
+                <>
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="tnum text-sm font-semibold text-muted">
+                      {String(d.n).padStart(2, '0')}
+                    </span>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                        d.live ? 'bg-positive/10 text-positive' : 'bg-line text-muted'
+                      }`}
+                    >
+                      {d.live ? 'live' : 'building'}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-base font-semibold text-ink">
+                    {d.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted">{d.desc}</p>
+                  {d.href && (
+                    <span className="mt-3 inline-block text-sm font-medium text-brand">
+                      Open →
+                    </span>
+                  )}
+                </>
+              );
+              return d.href ? (
+                <Link
+                  key={d.n}
+                  href={d.href}
+                  className="group rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-brand"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div key={d.n} className="rounded-2xl border border-line bg-surface p-5">
+                  {inner}
                 </div>
-                <h3 className="font-display text-base font-semibold text-ink">
-                  {d.title}
-                </h3>
-                <p className="mt-1 text-sm text-muted">{d.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
