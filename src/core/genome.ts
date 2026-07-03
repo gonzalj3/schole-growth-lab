@@ -25,7 +25,13 @@ export type Headline =
   | 'measurable_adoption' // "from awareness to measured ROI"     — proof of impact
   | 'governance_ready' //    "AI-ready and compliant"             — risk reduction
   | 'admin_control' //       "assign, track, prove from one place"— visibility/control
-  | 'research_credibility'; //"a decade of science, Berkeley/EPFL"— vendor trust
+  | 'research_credibility' //"a decade of science, Berkeley/EPFL" — vendor trust
+  | 'value_realization'; //  "you're paying for AI, getting no value" — waste/ROI
+// `value_realization` is grounded in a live market signal: Palantir CEO Alex
+// Karp (CNBC, Jul 2026) — enterprises are "paying for tokens that create no
+// value" and executives fear losing control of their data/"alpha". Reframed
+// honestly for Scholé: the AI you already bought is wasted on a team that can't
+// use it; Scholé converts that spend into results, grounded in YOUR knowledge.
 
 export type PrimaryCta =
   | 'book_demo' //      the real "contract" path
@@ -101,6 +107,13 @@ export const HEADLINE_COPY: Record<
     subhead:
       'Spun out of the ML-for-Education labs at UC Berkeley and EPFL. 30+ peer-reviewed papers, now a platform trusted by 100+ organizations.',
     why: 'I need to trust this vendor is real before I invest.',
+  },
+  value_realization: {
+    eyebrow: 'The AI value gap',
+    headline: "You're already paying for AI. Your team isn't getting the value.",
+    subhead:
+      'Most of that spend is wasted the moment it reaches people who can’t use it well. Scholé turns the AI tools you already bought into measurable results — grounded in your own knowledge, under your control.',
+    why: "I'm paying for AI and getting no return. I need the value, not more tokens.",
   },
 };
 
@@ -255,6 +268,24 @@ export const SEED_VARIANTS: Variant[] = [
       socialProof: 'case_studies',
       tone: 'consultative',
       sectionOrder: ['benefits', 'howItWorks', 'proof', 'pricing'],
+      length: 'medium',
+      heroLayout: 'dashboard_demo',
+    },
+  },
+  {
+    id: 'v6_value_gap',
+    name: 'Close the AI Value Gap',
+    why: 'Value — “I’m paying for AI and getting no return.” (the Karp signal)',
+    // Grounded in Alex Karp's Jul-2026 CNBC critique that enterprises are
+    // "paying for tokens that create no value" and losing control of their data.
+    // Leads with proof to rebut "no value" head-on; punchy, ROI-forward.
+    genome: {
+      headline: 'value_realization',
+      primaryCta: 'book_demo',
+      ctaStyle: 'dual',
+      socialProof: 'research_stats',
+      tone: 'punchy',
+      sectionOrder: ['proof', 'benefits', 'howItWorks', 'credibility', 'pricing'],
       length: 'medium',
       heroLayout: 'dashboard_demo',
     },

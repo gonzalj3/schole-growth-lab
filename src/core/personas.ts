@@ -101,28 +101,31 @@ interface PreferenceWeights {
 
 export const GROUND_TRUTH: Record<PersonaId, PreferenceWeights> = {
   lnd_leader: {
-    headline: { measurable_adoption: 1.2, team_capability: 1.0, admin_control: 0.7, research_credibility: 0.4, governance_ready: 0.3 },
+    headline: { measurable_adoption: 1.2, team_capability: 1.0, value_realization: 0.9, admin_control: 0.7, research_credibility: 0.4, governance_ready: 0.3 },
     primaryCta: { book_demo: 1.0, get_diagnostic: 0.8, get_pricing: 0.2 },
     socialProof: { case_studies: 1.0, company_logos: 0.7, research_stats: 0.6, compliance_security: 0.2 },
     tone: { consultative: 0.6, academic: 0.4, punchy: 0.0 },
     length: { medium: 0.4, long: 0.3, short: -0.2 },
   },
   ops_leader: {
-    headline: { measurable_adoption: 1.3, admin_control: 0.9, team_capability: 0.7, governance_ready: 0.2, research_credibility: 0.1 },
+    // The Karp "value gap" why is the ROI buyer's exact language — rank it top.
+    headline: { value_realization: 1.4, measurable_adoption: 1.3, admin_control: 0.9, team_capability: 0.7, governance_ready: 0.2, research_credibility: 0.1 },
     primaryCta: { book_demo: 0.9, get_pricing: 0.7, get_diagnostic: 0.7 },
     socialProof: { case_studies: 1.0, company_logos: 0.6, compliance_security: 0.3, research_stats: 0.2 },
     tone: { punchy: 0.6, consultative: 0.4, academic: -0.5 }, // wants outcomes, not a lecture
     length: { medium: 0.4, short: 0.3, long: -0.3 },
   },
   compliance_buyer: {
-    headline: { governance_ready: 1.4, measurable_adoption: 0.9, admin_control: 0.6, research_credibility: 0.6, team_capability: 0.2 },
+    headline: { governance_ready: 1.4, measurable_adoption: 0.9, admin_control: 0.6, research_credibility: 0.6, value_realization: 0.6, team_capability: 0.2 },
     primaryCta: { book_demo: 1.0, get_diagnostic: 0.5, get_pricing: 0.4 },
     socialProof: { compliance_security: 1.3, research_stats: 0.8, company_logos: 0.5, case_studies: 0.4 },
     tone: { academic: 0.6, consultative: 0.3, punchy: -0.3 },
     length: { long: 0.5, medium: 0.2, short: -0.5 },
   },
   security_skeptic: {
-    headline: { research_credibility: 1.4, governance_ready: 0.9, measurable_adoption: 0.4, admin_control: 0.2, team_capability: -0.2 },
+    // Karp's "own your data/alpha, don't get burned" framing resonates; but the
+    // punchy waste-framing reads a touch hype, so a modest positive weight.
+    headline: { research_credibility: 1.4, governance_ready: 0.9, value_realization: 0.5, measurable_adoption: 0.4, admin_control: 0.2, team_capability: -0.2 },
     primaryCta: { book_demo: 0.9, get_pricing: 0.4, get_diagnostic: 0.2 },
     socialProof: { research_stats: 1.2, compliance_security: 1.1, case_studies: 0.5, company_logos: 0.4 },
     tone: { academic: 1.0, consultative: -0.2, punchy: -0.9 }, // hype repels
