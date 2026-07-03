@@ -286,7 +286,7 @@ export const SEED_VARIANTS: Variant[] = [
       socialProof: 'research_stats',
       tone: 'punchy',
       sectionOrder: ['proof', 'benefits', 'howItWorks', 'credibility', 'pricing'],
-      length: 'medium',
+      length: 'long', // show pricing: "here's the cost vs. the value you're wasting"
       heroLayout: 'dashboard_demo',
     },
   },
