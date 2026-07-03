@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Scholé brand system.
+   Academic-yet-modern, Swiss-clean, research-credible, warm on paper.
+   Every token here is referenced by name in components (bg-paper, text-ink…)
+   so a reader can trace a color to its meaning. Tailwind v4 @theme.
+--------------------------------------------------------------------------- */
+@theme {
+  /* surfaces */
+  --color-paper: #faf8f3; /* warm paper — the page background */
+  --color-surface: #ffffff; /* cards / raised panels */
+  --color-line: #e9e3d8; /* hairline borders on paper */
+
+  /* ink */
+  --color-ink: #1b1e28; /* headings + primary text */
+  --color-body: #33384a; /* body copy */
+  --color-muted: #6b7183; /* secondary / captions */
+
+  /* brand — modern-AI indigo (primary action) */
+  --color-brand: #4338ca;
+  --color-brand-hover: #372fb0;
+  --color-brand-soft: #eef0ff;
+
+  /* accent — scholarly amber/gold (warmth, highlights) */
+  --color-accent: #c0842b;
+  --color-accent-soft: #f6ecd8;
+
+  /* signal colors for the lab (data viz) */
+  --color-positive: #2e7d57;
+  --color-negative: #b4442f;
+  --color-neutral: #8a90a2;
+
+  /* fonts (wired in layout.tsx via next/font) */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html {
+  background: var(--color-paper);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display headings lean on the serif for an editorial, academic feel. */
+.font-display {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+/* Tabular numbers for the lab — data should line up. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
