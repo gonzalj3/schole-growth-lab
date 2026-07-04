@@ -94,7 +94,11 @@ export function LineChart({
   const x = (i: number) => PAD.left + (n <= 1 ? 0 : (i / (n - 1)) * plotW);
   const y = (v: number) => PAD.top + (1 - v / yMax) * plotH;
   const fmt = (v: number) =>
-    v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v.toFixed(0)}`;
+    v >= 1e6
+      ? `$${(v / 1e6).toFixed(1)}M`
+      : v >= 1000
+        ? `$${(v / 1000).toFixed(0)}k`
+        : `$${v.toFixed(0)}`;
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" className="block">
