@@ -68,6 +68,9 @@ export default function ExperimentPage() {
             <Link href="/lab/behavior" className="hover:text-ink">
               behavior
             </Link>
+            <Link href="/lab/attribution" className="hover:text-ink">
+              attribution
+            </Link>
             <Link href="/" className="hover:text-ink">
               ← back to lab
             </Link>

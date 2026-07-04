@@ -72,9 +72,17 @@ export default function BehaviorPage() {
               Growth Lab
             </span>
           </div>
-          <Link href="/" className="text-xs text-muted hover:text-ink">
-            ← back to lab
-          </Link>
+          <div className="flex gap-4 text-xs text-muted">
+            <Link href="/lab/experiment" className="hover:text-ink">
+              experiment
+            </Link>
+            <Link href="/lab/attribution" className="hover:text-ink">
+              attribution
+            </Link>
+            <Link href="/" className="hover:text-ink">
+              ← back to lab
+            </Link>
+          </div>
         </div>
       </header>
 
