@@ -17,6 +17,7 @@
 // ---------------------------------------------------------------------------
 
 import type { Genome, Section } from './genome';
+import { ALLELES, DEFAULT_SECTION_ORDER } from './genome';
 import type { PersonaId, ConversionAction } from './personas';
 import { PERSONAS, GROUND_TRUTH, samplePersona } from './personas';
 import { bodySections } from './render';
@@ -257,6 +258,26 @@ export function summarizeVisits(visits: Visit[]): VisitSummary {
     meanReward: n === 0 ? 0 : totalReward / n,
     actionCounts,
     sections,
+  };
+}
+
+/**
+ * A genome with each attributed gene drawn independently at random. This
+ * randomization is what lets attribution (Phase 3) de-confound genes: because
+ * every allele co-occurs with every other gene's alleles roughly equally, the
+ * marginal mean reward per allele isolates that allele's own effect. Section
+ * order is held fixed (we don't attribute it).
+ */
+export function randomGenome(rng: Rng): Genome {
+  return {
+    headline: rng.pick(ALLELES.headline),
+    primaryCta: rng.pick(ALLELES.primaryCta),
+    ctaStyle: rng.pick(ALLELES.ctaStyle),
+    socialProof: rng.pick(ALLELES.socialProof),
+    tone: rng.pick(ALLELES.tone),
+    length: rng.pick(ALLELES.length),
+    heroLayout: rng.pick(ALLELES.heroLayout),
+    sectionOrder: DEFAULT_SECTION_ORDER,
   };
 }
 

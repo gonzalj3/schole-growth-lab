@@ -292,6 +292,59 @@ export const SEED_VARIANTS: Variant[] = [
   },
 ];
 
+// ---- Allele catalog (runtime) ---------------------------------------------
+// The full option set for each gene, as data. Used to build randomized genome
+// populations for attribution (Phase 3) — where each allele must appear across
+// many genome contexts so its marginal effect can be de-confounded.
+
+export const ALLELES = {
+  headline: [
+    'team_capability',
+    'measurable_adoption',
+    'governance_ready',
+    'admin_control',
+    'research_credibility',
+    'value_realization',
+  ] as Headline[],
+  primaryCta: ['book_demo', 'get_pricing', 'get_diagnostic'] as PrimaryCta[],
+  ctaStyle: ['single', 'dual'] as CtaStyle[],
+  socialProof: [
+    'case_studies',
+    'company_logos',
+    'research_stats',
+    'compliance_security',
+  ] as SocialProof[],
+  tone: ['academic', 'punchy', 'consultative'] as Tone[],
+  length: ['short', 'medium', 'long'] as Length[],
+  heroLayout: ['split_image', 'centered_minimal', 'dashboard_demo'] as HeroLayout[],
+} as const;
+
+// The genes we attribute reward to. `sectionOrder` is excluded (it's a
+// permutation, not a flat allele) — `length` already captures page structure.
+// `heroLayout` carries no ground-truth signal on purpose: it's the null control
+// that the attribution + promotion gate must correctly decline to promote.
+export const ATTRIBUTED_GENES = [
+  'headline',
+  'primaryCta',
+  'ctaStyle',
+  'socialProof',
+  'tone',
+  'length',
+  'heroLayout',
+] as const;
+
+export type AttributedGene = (typeof ATTRIBUTED_GENES)[number];
+
+// The canonical section order used for randomized attribution genomes (we don't
+// attribute section order, so hold it fixed).
+export const DEFAULT_SECTION_ORDER: Section[] = [
+  'benefits',
+  'howItWorks',
+  'proof',
+  'credibility',
+  'pricing',
+];
+
 // ---- Small helpers (kept trivial on purpose) ------------------------------
 
 export const ALL_GENES = [
