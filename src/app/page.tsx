@@ -124,6 +124,26 @@ export default function Home() {
               );
             })}
           </div>
+
+          {/* Rigor callout — the eval scorecard */}
+          <Link
+            href="/lab/evals"
+            className="group mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand/30 bg-brand-soft p-5 transition-colors hover:border-brand"
+          >
+            <div>
+              <div className="font-display text-base font-semibold text-ink">
+                Bonus · How we grade ourselves
+              </div>
+              <p className="mt-1 text-sm text-muted">
+                Five evals scored against the hidden ground truth across many
+                seeds — arm ID, attribution recovery, regret, CI calibration, and
+                the false-discovery guard.
+              </p>
+            </div>
+            <span className="text-sm font-medium text-brand group-hover:underline">
+              Open the scorecard →
+            </span>
+          </Link>
         </div>
       </section>
 

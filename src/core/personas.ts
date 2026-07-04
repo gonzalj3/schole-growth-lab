@@ -166,6 +166,14 @@ export const AUDIENCE_MIXES: Record<string, Record<PersonaId, number>> = {
   },
 };
 
+// Human-friendly labels for the deal-shape mixes (used across the UI + narrative).
+export const MIX_LABEL: Record<string, string> = {
+  champion_led: 'champion-led',
+  roi_driven: 'ROI-driven',
+  risk_driven: 'risk-driven',
+  balanced: 'balanced',
+};
+
 // ---- Helpers ---------------------------------------------------------------
 
 /** Sanity check that a mix is a valid probability distribution. */

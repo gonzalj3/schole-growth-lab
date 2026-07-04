@@ -11,6 +11,7 @@ import { AUDIENCE_MIXES } from '@/core/personas';
 import { runGeneration } from '@/core/generate';
 import type { AttributedGene } from '@/core/genome';
 import { LandingPage } from '@/components/landing/LandingPage';
+import { LabNav } from '@/components/lab/LabNav';
 
 const MIXES = Object.keys(AUDIENCE_MIXES);
 const pretty = (s: string) => s.replace(/_/g, ' ');
@@ -41,23 +42,7 @@ export default function GeneratePage() {
 
   return (
     <main className="min-h-screen">
-      <header className="border-b border-line">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="font-display text-lg font-semibold text-ink">
-              Scholé
-            </Link>
-            <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">
-              Growth Lab
-            </span>
-          </div>
-          <div className="flex gap-4 text-xs text-muted">
-            <Link href="/lab/attribution" className="hover:text-ink">attribution</Link>
-            <Link href="/lab/experiment" className="hover:text-ink">experiment</Link>
-            <Link href="/" className="hover:text-ink">← back</Link>
-          </div>
-        </div>
-      </header>
+      <LabNav here="/lab/generate" />
 
       <div className="mx-auto max-w-5xl px-6 py-10">
         <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">

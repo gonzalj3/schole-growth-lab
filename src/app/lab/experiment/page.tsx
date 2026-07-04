@@ -6,13 +6,13 @@
 // confidence intervals, and a regret curve vs a uniform baseline + the oracle.
 
 import { useMemo, useState } from 'react';
-import Link from 'next/link';
 import { SEED_VARIANTS } from '@/core/genome';
 import { AUDIENCE_MIXES, PERSONAS } from '@/core/personas';
 import type { PersonaId } from '@/core/personas';
 import { runExperiment, type ExperimentConfig } from '@/core/experiment';
 import type { BanditKind } from '@/core/bandit';
 import { StackedAreaChart, LineChart, ARM_COLORS } from '@/components/lab/charts';
+import { LabNav } from '@/components/lab/LabNav';
 
 const MIXES = Object.keys(AUDIENCE_MIXES);
 const BANDITS: { key: BanditKind; label: string }[] = [
@@ -54,29 +54,7 @@ export default function ExperimentPage() {
 
   return (
     <main className="min-h-screen">
-      <header className="border-b border-line">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="font-display text-lg font-semibold text-ink">
-              Scholé
-            </Link>
-            <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">
-              Growth Lab
-            </span>
-          </div>
-          <div className="flex gap-4 text-xs text-muted">
-            <Link href="/lab/behavior" className="hover:text-ink">
-              behavior
-            </Link>
-            <Link href="/lab/attribution" className="hover:text-ink">
-              attribution
-            </Link>
-            <Link href="/" className="hover:text-ink">
-              ← back to lab
-            </Link>
-          </div>
-        </div>
-      </header>
+      <LabNav here="/lab/experiment" />
 
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">

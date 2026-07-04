@@ -7,6 +7,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { LabNav } from '@/components/lab/LabNav';
 import { interpret } from '@/core/interpret';
 import { AUDIENCE_MIXES } from '@/core/personas';
 
@@ -23,23 +24,7 @@ export default function StoryPage() {
 
   return (
     <main className="min-h-screen">
-      <header className="border-b border-line">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="font-display text-lg font-semibold text-ink">
-              Scholé
-            </Link>
-            <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">
-              Growth Lab
-            </span>
-          </div>
-          <div className="flex gap-4 text-xs text-muted">
-            <Link href="/lab/experiment" className="hover:text-ink">experiment</Link>
-            <Link href="/lab/attribution" className="hover:text-ink">attribution</Link>
-            <Link href="/lab/generate" className="hover:text-ink">generate</Link>
-          </div>
-        </div>
-      </header>
+      <LabNav here="/lab/story" />
 
       <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-accent">

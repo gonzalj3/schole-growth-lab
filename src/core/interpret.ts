@@ -15,7 +15,7 @@
 import { SEED_VARIANTS, HEADLINE_COPY, type AttributedGene } from './genome';
 import { runExperiment } from './experiment';
 import { runGeneration, type GeneChange } from './generate';
-import { AUDIENCE_MIXES } from './personas';
+import { AUDIENCE_MIXES, MIX_LABEL } from './personas';
 
 export interface StoryBeat {
   phase: number;
@@ -56,6 +56,7 @@ const nameById = (id: string) => SEED_VARIANTS.find((v) => v.id === id)?.name ??
 
 export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
   const { mixKey, seed } = cfg;
+  const mixLabel = MIX_LABEL[mixKey] ?? pretty(mixKey);
 
   // Phase 2: the bandit race over the six seed concepts.
   const exp = runExperiment({
@@ -128,7 +129,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     {
       phase: 2,
       title: `The bandit crowned ${winnerName}`,
-      detail: `A Thompson-sampling bandit poured simulated ${pretty(mixKey)} traffic across the six, shifting spend toward what paid. ${
+      detail: `A Thompson-sampling bandit poured simulated ${mixLabel} traffic across the six, shifting spend toward what paid. ${
         recovered
           ? `Its winner matches the true best under this audience — the system recovered reality from noisy behavior.`
           : `Its winner is still within noise of the true best (${oracleName}) — honest about what the sample supports.`
@@ -154,7 +155,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     },
   ];
 
-  const summary = `Under a ${pretty(mixKey)} audience, the market wanted “${winnerWhy}” — ${winnerName} won, and the system bred a page worth ${money(
+  const summary = `Under a ${mixLabel} audience, the market wanted “${winnerWhy}” — ${winnerName} won, and the system bred a page worth ${money(
     offspring.offspringReward,
   )} per visit, a ${(liftPct * 100).toFixed(1)}% lift, and can defend every choice.`;
 
