@@ -3,7 +3,6 @@
 // pages) is live; the lab views (#2–#6) light up as later phases land.
 
 import Link from 'next/link';
-import { SEED_VARIANTS, HEADLINE_COPY, CTA_COPY } from '@/core/genome';
 
 const DELIVERABLES: {
   n: number;
@@ -12,7 +11,7 @@ const DELIVERABLES: {
   live: boolean;
   href?: string;
 }[] = [
-  { n: 1, title: 'Initial versions', desc: 'Six real Scholé Teams pages, each a different "why".', live: true, href: '/#variants' },
+  { n: 1, title: 'Initial versions', desc: 'Six real Scholé Teams pages, each a different "why".', live: true, href: '/variants' },
   { n: 2, title: 'How pages were compared', desc: 'The experiment design + live traffic allocation.', live: true, href: '/lab/experiment' },
   { n: 3, title: 'Simulated behavior', desc: 'Section-level engagement + revenue per variant.', live: true, href: '/lab/behavior' },
   { n: 4, title: 'Which performed better', desc: 'Leaderboard with confidence intervals + regret.', live: true, href: '/lab/experiment' },
@@ -20,13 +19,6 @@ const DELIVERABLES: {
   { n: 6, title: 'What changed & why', desc: 'The interpreter’s plain-language explanation.', live: true, href: '/lab/story' },
 ];
 
-function GeneChip({ label }: { label: string }) {
-  return (
-    <span className="rounded-md border border-line bg-paper px-2 py-0.5 text-[11px] text-muted">
-      {label}
-    </span>
-  );
-}
 
 export default function Home() {
   return (
@@ -61,12 +53,12 @@ export default function Home() {
           <span className="text-ink">knowledge tracing, pointed at the market.</span>
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <a
-            href="#variants"
+          <Link
+            href="/variants"
             className="inline-flex items-center rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white hover:bg-brand-hover"
           >
             See the six concepts
-          </a>
+          </Link>
           <Link
             href="/lab/story"
             className="inline-flex items-center rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-ink hover:border-brand"
@@ -165,57 +157,6 @@ export default function Home() {
               Open the scorecard →
             </span>
           </Link>
-        </div>
-      </section>
-
-      {/* Variant gallery */}
-      <section id="variants" className="mx-auto max-w-6xl px-6 py-16 scroll-mt-6">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">
-          Phase 1 · Why Discovery
-        </div>
-        <h2 className="mb-2 font-display text-3xl font-semibold text-ink">
-          The five seed concepts
-        </h2>
-        <p className="mb-10 max-w-2xl text-muted">
-          Each is a genuinely different page — not a button-color test. They
-          differ in headline, structure, proof, tone, and call to action, so the
-          winner tells us <em>which reason to buy</em> resonates.
-        </p>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {SEED_VARIANTS.map((v, i) => {
-            const g = v.genome;
-            return (
-              <Link
-                key={v.id}
-                href={`/variants/${v.id}`}
-                className="group flex flex-col rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-brand"
-              >
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="tnum rounded-md bg-ink px-2 py-0.5 text-xs font-semibold text-white">
-                    V{i + 1}
-                  </span>
-                  <span className="font-display text-lg font-semibold text-ink">
-                    {v.name}
-                  </span>
-                </div>
-                <p className="text-sm italic text-accent">{v.why}</p>
-                <p className="mt-3 line-clamp-2 font-display text-base text-body">
-                  &ldquo;{HEADLINE_COPY[g.headline].headline}&rdquo;
-                </p>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  <GeneChip label={`CTA: ${CTA_COPY[g.primaryCta].replace(/\s*\(.*/, '')}`} />
-                  <GeneChip label={`proof: ${g.socialProof}`} />
-                  <GeneChip label={`tone: ${g.tone}`} />
-                  <GeneChip label={`hero: ${g.heroLayout}`} />
-                  <GeneChip label={g.length} />
-                </div>
-                <span className="mt-5 text-sm font-medium text-brand group-hover:underline">
-                  View full page →
-                </span>
-              </Link>
-            );
-          })}
         </div>
       </section>
 

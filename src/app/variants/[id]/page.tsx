@@ -25,8 +25,8 @@ export default async function VariantPage({
           and can get back. Not sticky — the page's own nav takes over on scroll. */}
       <div className="bg-ink text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-2 text-xs">
-          <Link href="/" className="text-white/70 hover:text-white">
-            ← Growth Lab
+          <Link href="/variants" className="text-white/70 hover:text-white">
+            ← All concepts
           </Link>
           <span className="truncate text-white/90">
             <span className="font-medium">{variant.name}</span>
