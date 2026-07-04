@@ -91,7 +91,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
 // Positive = attracts, negative = repels, absent = neutral (0). Only genes
 // that carry real signal are listed. DO NOT import this except in simulate.ts.
 
-interface PreferenceWeights {
+export interface PreferenceWeights {
   headline: Partial<Record<Headline, number>>;
   primaryCta: Partial<Record<PrimaryCta, number>>;
   socialProof: Partial<Record<SocialProof, number>>;

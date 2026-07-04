@@ -18,7 +18,7 @@
 
 import type { Genome, Section } from './genome';
 import { ALLELES, DEFAULT_SECTION_ORDER } from './genome';
-import type { PersonaId, ConversionAction } from './personas';
+import type { PersonaId, ConversionAction, PreferenceWeights } from './personas';
 import { PERSONAS, GROUND_TRUTH, samplePersona } from './personas';
 import { bodySections } from './render';
 import type { Rng } from './rng';
@@ -39,7 +39,7 @@ export interface Visit {
   reward: number; // conversionValue[persona][action]
   // Hidden ground truth. For the debug view + evals ONLY. The optimizer must
   // never read `_truth` — it exists so WE can grade the system's inferences.
-  _truth: { persona: PersonaId; utility: number };
+  _truth: { persona: string; utility: number };
 }
 
 // ---- Tunable assumptions (each an explicit modeling assumption) --------------
@@ -73,11 +73,28 @@ const SCROLL_NOISE = 0.3;
 const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
 const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
 
+// ---- Persona spec ---------------------------------------------------------
+// A self-contained buyer: preference weights + money + preferred action. The
+// baked committee (GROUND_TRUTH + PERSONAS) is one source of these, but the same
+// loop can run against ANY spec — e.g. a point-in-time sequential persona
+// (sequential/). That's what makes the temporal stress-test reuse everything.
+
+export interface PersonaSpec {
+  weights: PreferenceWeights;
+  conversionValue: Record<ConversionAction, number>;
+  preferredAction: ConversionAction;
+}
+
+const specOf = (personaId: PersonaId): PersonaSpec => ({
+  weights: GROUND_TRUTH[personaId],
+  conversionValue: PERSONAS[personaId].conversionValue,
+  preferredAction: PERSONAS[personaId].preferredAction,
+});
+
 // ---- The hidden truth (readers: this module, plus tests/evals) ------------
 
-/** Total how-much-they-like-it for a genome, from the ground-truth weights. */
-export function trueUtility(g: Genome, personaId: PersonaId): number {
-  const w = GROUND_TRUTH[personaId];
+/** Total how-much-they-like-it for a genome, from an explicit weight table. */
+export function utilityFromWeights(g: Genome, w: PreferenceWeights): number {
   return (
     (w.headline[g.headline] ?? 0) +
     (w.primaryCta[g.primaryCta] ?? 0) +
@@ -87,6 +104,11 @@ export function trueUtility(g: Genome, personaId: PersonaId): number {
   );
 }
 
+/** Total how-much-they-like-it for a genome, from the ground-truth weights. */
+export function trueUtility(g: Genome, personaId: PersonaId): number {
+  return utilityFromWeights(g, GROUND_TRUTH[personaId]);
+}
+
 /** The non-"none" actions this page actually offers (from the CTA genes). */
 export function availableActions(g: Genome): ConversionAction[] {
   const actions = new Set<ConversionAction>([g.primaryCta]);
@@ -94,12 +116,48 @@ export function availableActions(g: Genome): ConversionAction[] {
   return [...actions];
 }
 
-// ---- One simulated visit --------------------------------------------------
+// ---- One simulated visit (spec-based core) --------------------------------
 
-export function simulateVisit(g: Genome, personaId: PersonaId, rng: Rng): Visit {
-  const persona = PERSONAS[personaId];
-  const w = GROUND_TRUTH[personaId];
-  const utility = trueUtility(g, personaId);
+/** The action distribution a page induces for a persona spec — multinomial
+ *  logit (softmax) over the offered CTAs + "none". Deterministic. */
+export function actionProbabilitiesSpec(
+  g: Genome,
+  spec: PersonaSpec,
+): { action: ConversionAction; p: number }[] {
+  const utility = utilityFromWeights(g, spec.weights);
+  const candidates: { action: ConversionAction; logit: number }[] = availableActions(g).map(
+    (a) => ({
+      action: a,
+      logit: A_UTIL * utility + FRICTION_BONUS[a] + (a === spec.preferredAction ? PREF_BONUS : 0),
+    }),
+  );
+  candidates.push({ action: 'none', logit: NONE_BASE });
+
+  const max = Math.max(...candidates.map((c) => c.logit));
+  const exps = candidates.map((c) => Math.exp(c.logit - max));
+  const total = exps.reduce((a, b) => a + b, 0);
+  return candidates.map((c, i) => ({ action: c.action, p: exps[i] / total }));
+}
+
+function chooseActionSpec(g: Genome, spec: PersonaSpec, rng: Rng): ConversionAction {
+  const dist = actionProbabilitiesSpec(g, spec);
+  let u = rng.next();
+  for (const { action, p } of dist) {
+    u -= p;
+    if (u < 0) return action;
+  }
+  return 'none';
+}
+
+/** One simulated visit against any persona spec — the reusable core. */
+export function simulateVisitSpec(
+  g: Genome,
+  spec: PersonaSpec,
+  rng: Rng,
+  personaLabel = 'custom',
+): Visit {
+  const w = spec.weights;
+  const utility = utilityFromWeights(g, w);
 
   // Per-section affinity: tone colors every section; proof is also driven by
   // which social-proof allele shows. (Other sections carry no hidden weight.)
@@ -127,54 +185,36 @@ export function simulateVisit(g: Genome, personaId: PersonaId, rng: Rng): Visit 
 
   // Intent: hovering the CTA scales with overall attraction.
   const ctaHovered = rng.bool(sigmoid(0.7 * utility - 0.5));
+  const action = chooseActionSpec(g, spec, rng);
+  const reward = spec.conversionValue[action];
 
-  // Action: softmax over the offered actions + "none".
-  const action = chooseAction(g, personaId, rng);
-  const reward = persona.conversionValue[action];
-
-  return { sections, ctaHovered, action, reward, _truth: { persona: personaId, utility } };
+  return { sections, ctaHovered, action, reward, _truth: { persona: personaLabel, utility } };
 }
 
-/**
- * The action distribution a page induces for a persona — the multinomial-logit
- * (softmax) over the CTAs the page offers, plus "none". Deterministic: this is
- * the model's probabilities, from which simulateVisit samples. Exposed so the
- * experiment can compute an EXACT oracle for regret without Monte-Carlo noise.
- */
+/** Exact expected reward (revenue) of a page for any spec: Σ P(a)·value(a). */
+export function expectedRewardSpec(g: Genome, spec: PersonaSpec): number {
+  return actionProbabilitiesSpec(g, spec).reduce(
+    (sum, { action, p }) => sum + p * spec.conversionValue[action],
+    0,
+  );
+}
+
+// ---- Committee wrappers (unchanged behavior) ------------------------------
+
+export function simulateVisit(g: Genome, personaId: PersonaId, rng: Rng): Visit {
+  return simulateVisitSpec(g, specOf(personaId), rng, personaId);
+}
+
 export function actionProbabilities(
   g: Genome,
   personaId: PersonaId,
 ): { action: ConversionAction; p: number }[] {
-  const preferred = PERSONAS[personaId].preferredAction;
-  const utility = trueUtility(g, personaId);
-  const candidates: { action: ConversionAction; logit: number }[] = availableActions(g).map(
-    (a) => ({
-      action: a,
-      logit: A_UTIL * utility + FRICTION_BONUS[a] + (a === preferred ? PREF_BONUS : 0),
-    }),
-  );
-  candidates.push({ action: 'none', logit: NONE_BASE });
-
-  const max = Math.max(...candidates.map((c) => c.logit));
-  const exps = candidates.map((c) => Math.exp(c.logit - max));
-  const total = exps.reduce((a, b) => a + b, 0);
-  return candidates.map((c, i) => ({ action: c.action, p: exps[i] / total }));
+  return actionProbabilitiesSpec(g, specOf(personaId));
 }
 
-function chooseAction(g: Genome, personaId: PersonaId, rng: Rng): ConversionAction {
-  const dist = actionProbabilities(g, personaId);
-  let u = rng.next();
-  for (const { action, p } of dist) {
-    u -= p;
-    if (u < 0) return action;
-  }
-  return 'none';
-}
-
-/** Exact expected reward (revenue) of a page for one persona: Σ P(a)·value(a). */
+/** Exact expected reward (revenue) of a page for one persona. */
 export function expectedReward(g: Genome, personaId: PersonaId): number {
-  const value = PERSONAS[personaId].conversionValue;
-  return actionProbabilities(g, personaId).reduce((sum, { action, p }) => sum + p * value[action], 0);
+  return expectedRewardSpec(g, specOf(personaId));
 }
 
 /** Exact expected reward under an audience mix: Σ_persona mix[p]·expectedReward. */

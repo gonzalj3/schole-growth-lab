@@ -109,10 +109,10 @@ export const HEADLINE_COPY: Record<
     why: 'I need to trust this vendor is real before I invest.',
   },
   value_realization: {
-    eyebrow: 'The AI value gap',
-    headline: "You're already paying for AI. Your team isn't getting the value.",
+    eyebrow: 'Results, not tokens',
+    headline: 'Stop paying for tokens. Start getting results.',
     subhead:
-      'Most of that spend is wasted the moment it reaches people who can’t use it well. Scholé turns the AI tools you already bought into measurable results — grounded in your own knowledge, under your control.',
+      'You’re already paying for AI — the value leaks the moment it reaches people who can’t use it well. Scholé turns the AI you already bought into measurable results, grounded in your own knowledge and under your control.',
     why: "I'm paying for AI and getting no return. I need the value, not more tokens.",
   },
 };

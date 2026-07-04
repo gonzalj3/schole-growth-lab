@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .gstack/
+
+# reference material for the sequential-persona augmentation (adapted into src/core/sequential)
+deliverResultsCulture/
