@@ -43,3 +43,6 @@ next-env.d.ts
 
 # reference material for the sequential-persona augmentation (adapted into src/core/sequential)
 deliverResultsCulture/
+
+# private working notes / explainers — never publish
+docs/
