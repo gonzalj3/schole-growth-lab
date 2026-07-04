@@ -13,9 +13,9 @@ const DELIVERABLES: {
   href?: string;
 }[] = [
   { n: 1, title: 'Initial versions', desc: 'Six real Scholé Teams pages, each a different "why".', live: true, href: '/#variants' },
-  { n: 2, title: 'How pages were compared', desc: 'The experiment design + live traffic allocation.', live: false },
+  { n: 2, title: 'How pages were compared', desc: 'The experiment design + live traffic allocation.', live: true, href: '/lab/experiment' },
   { n: 3, title: 'Simulated behavior', desc: 'Section-level engagement + revenue per variant.', live: true, href: '/lab/behavior' },
-  { n: 4, title: 'Which performed better', desc: 'Leaderboard with confidence intervals + regret.', live: false },
+  { n: 4, title: 'Which performed better', desc: 'Leaderboard with confidence intervals + regret.', live: true, href: '/lab/experiment' },
   { n: 5, title: 'New generated variation', desc: "The system's informed offspring page.", live: false },
   { n: 6, title: 'What changed & why', desc: 'The interpreter’s plain-language explanation.', live: false },
 ];
