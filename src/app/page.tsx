@@ -17,7 +17,7 @@ const DELIVERABLES: {
   { n: 3, title: 'Simulated behavior', desc: 'Section-level engagement + revenue per variant.', live: true, href: '/lab/behavior' },
   { n: 4, title: 'Which performed better', desc: 'Leaderboard with confidence intervals + regret.', live: true, href: '/lab/experiment' },
   { n: 5, title: 'New generated variation', desc: "The system's informed offspring page.", live: true, href: '/lab/generate' },
-  { n: 6, title: 'What changed & why', desc: 'The interpreter’s plain-language explanation.', live: false },
+  { n: 6, title: 'What changed & why', desc: 'The interpreter’s plain-language explanation.', live: true, href: '/lab/story' },
 ];
 
 function GeneChip({ label }: { label: string }) {
@@ -68,10 +68,10 @@ export default function Home() {
             See the six concepts
           </a>
           <Link
-            href="/lab/behavior"
+            href="/lab/story"
             className="inline-flex items-center rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-ink hover:border-brand"
           >
-            Open the lab →
+            Read the full story →
           </Link>
         </div>
       </section>
