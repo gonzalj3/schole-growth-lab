@@ -154,7 +154,7 @@ export default function TimelinePage() {
 
                   <div className="mt-auto pt-3 text-[11px] text-muted">
                     best current page: <span className="text-ink">{s.bestSeedName}</span>{' '}
-                    ({money(s.offspring.offspringReward)}/visit)
+                    (exp. {money(s.offspring.offspringReward)}/visit, sim.)
                   </div>
                   <div className="mt-1 text-[10px] leading-tight text-muted/80">{s.macroContext.split(/\(/)[0].trim()}</div>
                 </div>
@@ -212,7 +212,7 @@ export default function TimelinePage() {
                   {money(holdout.parentMeanObserved)} → {money(holdout.challengerMeanObserved)}
                 </div>
                 <div className="text-xs text-muted">
-                  parent → challenger, observed on holdout
+                  parent → challenger · expected/visit, simulated
                 </div>
               </div>
             </div>

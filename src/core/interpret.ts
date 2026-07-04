@@ -146,7 +146,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     },
     {
       phase: 4,
-      title: `A bred page worth ${money(offspring.offspringReward)}/visit`,
+      title: `A bred page: +${(liftPct * 100).toFixed(1)}% expected revenue per visit`,
       detail: `Starting from the champion (${offspring.parentName}), ${changesDesc}. It left every unproven gene untouched — no guessing. Attribution predicted ${money(
         offspring.estimatedLift,
       )}; the true lift was ${money(offspring.actualLift)} (${(liftPct * 100).toFixed(1)}%). The gap is unmodeled gene interactions, stated rather than hidden.`,
@@ -155,11 +155,10 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     },
   ];
 
-  const summary = `Under a ${mixLabel} audience, the market wanted “${winnerWhy}” — ${winnerName} won, and the system bred a page worth ${money(
-    offspring.offspringReward,
-  )} per visit, a ${(liftPct * 100).toFixed(1)}% lift, and can defend every choice.`;
+  const summary = `Under a ${mixLabel} audience, the market wanted “${winnerWhy}” — ${winnerName} won, and the system bred a page that lifts expected revenue per visit by ${(liftPct * 100).toFixed(1)}%, and can defend every choice.`;
 
   const caveats = [
+    'Dollar figures are expected revenue per visit inside the simulation — a relative score for ranking pages, not literal per-visitor revenue. The trustworthy result is the relative lift, not the absolute dollars (simulated conversion runs higher than real life, and each conversion is weighted by enterprise deal value).',
     'All traffic is simulated against a hidden ground truth we authored — the point is that we can grade the system’s inferences against a known answer.',
     'Attribution is a main-effects model; the gap between estimated and actual lift is real gene interactions it can’t see.',
     'Under a shifting audience mix a bandit can crown a false winner — the two-phase design, the mix knob, and the promotion gate exist to catch exactly that. Flip the mix and watch the winner change.',

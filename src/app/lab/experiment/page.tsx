@@ -181,10 +181,12 @@ export default function ExperimentPage() {
             Leaderboard — mean revenue per visit (95% CI)
           </h2>
           <p className="mt-1 max-w-3xl text-sm text-muted">
-            Ranked by observed mean reward. The whisker is the 95% confidence
-            interval; overlapping intervals mean we can&rsquo;t yet separate those
-            variants. The ★ marks the variant that is <em>truly</em> best (the
-            hidden oracle) — the check that the system recovered reality.
+            Ranked by observed mean reward — expected revenue per visit inside the
+            simulation, a relative score for comparison (not literal per-visitor
+            revenue). The whisker is the 95% confidence interval; overlapping
+            intervals mean we can&rsquo;t yet separate those variants. The ★ marks
+            the variant that is <em>truly</em> best (the hidden oracle) — the check
+            that the system recovered reality.
           </p>
           <div className="mt-4 space-y-2">
             {result.arms.map((a, rank) => (

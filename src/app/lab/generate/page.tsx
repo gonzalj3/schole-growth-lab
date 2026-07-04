@@ -97,14 +97,14 @@ export default function GeneratePage() {
             <div className="tnum mt-1 text-2xl font-semibold text-ink">
               {dollars(run.baseExpectedReward)}
             </div>
-            <div className="text-[11px] text-muted">per visit · {base.name}</div>
+            <div className="text-[11px] text-muted">expected/visit · simulated · {base.name}</div>
           </div>
           <div className="rounded-2xl border border-brand bg-brand-soft p-5">
             <div className="text-xs text-brand">Offspring expected reward</div>
             <div className="tnum mt-1 text-2xl font-semibold text-ink">
               {dollars(run.offspringExpectedReward)}
             </div>
-            <div className="text-[11px] text-muted">per visit · informed recombination</div>
+            <div className="text-[11px] text-muted">expected/visit · simulated</div>
           </div>
           <div className="rounded-2xl border border-positive/40 bg-positive/5 p-5">
             <div className="text-xs text-positive">True lift</div>
@@ -116,6 +116,11 @@ export default function GeneratePage() {
             </div>
           </div>
         </div>
+        <p className="mt-2 text-xs text-muted">
+          These are <em>expected revenue per visit inside the simulation</em> — a
+          relative score for comparing pages, not literal per-visitor revenue.
+          The trustworthy result is the <span className="text-ink">lift</span>.
+        </p>
 
         {/* Changes */}
         <section className="mt-8">
