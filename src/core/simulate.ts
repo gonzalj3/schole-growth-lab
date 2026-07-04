@@ -42,7 +42,7 @@ export interface Visit {
   _truth: { persona: string; utility: number };
 }
 
-// ---- Tunable assumptions (each an explicit modeling assumption) --------------
+// ---- Tunable assumptions (each an explicit modeling assumption) -----------
 
 // action logits
 const A_UTIL = 1.0; // how strongly utility pushes toward converting
