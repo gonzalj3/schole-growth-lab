@@ -128,18 +128,24 @@ export function simulateVisit(g: Genome, personaId: PersonaId, rng: Rng): Visit 
   const ctaHovered = rng.bool(sigmoid(0.7 * utility - 0.5));
 
   // Action: softmax over the offered actions + "none".
-  const action = chooseAction(g, persona.preferredAction, utility, rng);
+  const action = chooseAction(g, personaId, rng);
   const reward = persona.conversionValue[action];
 
   return { sections, ctaHovered, action, reward, _truth: { persona: personaId, utility } };
 }
 
-function chooseAction(
+/**
+ * The action distribution a page induces for a persona — the multinomial-logit
+ * (softmax) over the CTAs the page offers, plus "none". Deterministic: this is
+ * the model's probabilities, from which simulateVisit samples. Exposed so the
+ * experiment can compute an EXACT oracle for regret without Monte-Carlo noise.
+ */
+export function actionProbabilities(
   g: Genome,
-  preferred: ConversionAction,
-  utility: number,
-  rng: Rng,
-): ConversionAction {
+  personaId: PersonaId,
+): { action: ConversionAction; p: number }[] {
+  const preferred = PERSONAS[personaId].preferredAction;
+  const utility = trueUtility(g, personaId);
   const candidates: { action: ConversionAction; logit: number }[] = availableActions(g).map(
     (a) => ({
       action: a,
@@ -148,16 +154,37 @@ function chooseAction(
   );
   candidates.push({ action: 'none', logit: NONE_BASE });
 
-  // softmax → cumulative → draw
   const max = Math.max(...candidates.map((c) => c.logit));
   const exps = candidates.map((c) => Math.exp(c.logit - max));
   const total = exps.reduce((a, b) => a + b, 0);
-  let u = rng.next() * total;
-  for (let i = 0; i < candidates.length; i++) {
-    u -= exps[i];
-    if (u < 0) return candidates[i].action;
+  return candidates.map((c, i) => ({ action: c.action, p: exps[i] / total }));
+}
+
+function chooseAction(g: Genome, personaId: PersonaId, rng: Rng): ConversionAction {
+  const dist = actionProbabilities(g, personaId);
+  let u = rng.next();
+  for (const { action, p } of dist) {
+    u -= p;
+    if (u < 0) return action;
   }
   return 'none';
+}
+
+/** Exact expected reward (revenue) of a page for one persona: Σ P(a)·value(a). */
+export function expectedReward(g: Genome, personaId: PersonaId): number {
+  const value = PERSONAS[personaId].conversionValue;
+  return actionProbabilities(g, personaId).reduce((sum, { action, p }) => sum + p * value[action], 0);
+}
+
+/** Exact expected reward under an audience mix: Σ_persona mix[p]·expectedReward. */
+export function expectedRewardUnderMix(
+  g: Genome,
+  mix: Record<PersonaId, number>,
+): number {
+  return (Object.entries(mix) as [PersonaId, number][]).reduce(
+    (sum, [personaId, weight]) => sum + weight * expectedReward(g, personaId),
+    0,
+  );
 }
 
 // ---- Many visits + aggregation (for the debug view & experiment loop) -----
