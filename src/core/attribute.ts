@@ -73,7 +73,6 @@ export function attribute(samples: Sample[]): Attribution {
   const raw = new Map<string, { n: number; sum: number }>();
   const XtX = Array.from({ length: p }, () => new Array(p).fill(0));
   const Xty = new Array(p).fill(0);
-  let yty = 0;
   const N = samples.length;
 
   const buildRow = (g: Genome): number[] => {
@@ -96,7 +95,6 @@ export function attribute(samples: Sample[]): Attribution {
       Xty[i] += row[i] * y;
       for (let j = i; j < p; j++) XtX[i][j] += row[i] * row[j];
     }
-    yty += y * y;
     meta.forEach((m) => {
       const key = `${m.gene}:${String(s.genome[m.gene])}`;
       const r = raw.get(key) ?? { n: 0, sum: 0 };
@@ -112,8 +110,25 @@ export function attribute(samples: Sample[]): Attribution {
 
   const inv = invert(XtX);
   const beta = matVec(inv, Xty);
-  const rss = Math.max(0, yty - dot(beta, Xty));
-  const sigma2 = N > p ? rss / (N - p) : 0;
+
+  // Heteroscedasticity-consistent (HC1) covariance. Reward variance depends on
+  // the genome (mostly-zero with occasional large conversions), so classical OLS
+  // standard errors under-cover. The sandwich estimator inv·M·inv, with
+  // M = Σ eᵢ² xᵢxᵢᵀ (squared residuals), corrects the intervals — measured by
+  // the calibration eval. HC1 applies the small-sample factor N/(N−p).
+  const M = Array.from({ length: p }, () => new Array(p).fill(0));
+  for (const s of samples) {
+    const row = buildRow(s.genome);
+    const e = s.reward - dot(beta, row);
+    const e2 = e * e;
+    for (let i = 0; i < p; i++) {
+      const ri = row[i];
+      if (ri === 0) continue;
+      for (let j = 0; j < p; j++) if (row[j] !== 0) M[i][j] += ri * row[j] * e2;
+    }
+  }
+  const hc = N > p ? N / (N - p) : 1;
+  const cov = matMul(matMul(inv, M), inv).map((r) => r.map((v) => v * hc));
 
   const genes: GeneAttribution[] = meta.map((m, gi) => {
     const k = m.alleles.length;
@@ -126,13 +141,13 @@ export function attribute(samples: Sample[]): Attribution {
       // variance of the effect
       let variance: number;
       if (j < k - 1) {
-        variance = sigma2 * inv[start + j][start + j];
+        variance = cov[start + j][start + j];
       } else {
         // Var(-Σβ) = ΣΣ Cov(β_a, β_b) over the gene's columns
         let s = 0;
         for (let a = 0; a < k - 1; a++)
-          for (let b = 0; b < k - 1; b++) s += inv[start + a][start + b];
-        variance = sigma2 * s;
+          for (let b = 0; b < k - 1; b++) s += cov[start + a][start + b];
+        variance = s;
       }
       const se = Math.sqrt(Math.max(0, variance));
       const r = raw.get(`${m.gene}:${allele}`) ?? { n: 0, sum: 0 };
@@ -183,6 +198,20 @@ function invert(M: number[][]): number[][] {
 const matVec = (M: number[][], v: number[]): number[] =>
   M.map((row) => row.reduce((s, x, j) => s + x * v[j], 0));
 const dot = (a: number[], b: number[]): number => a.reduce((s, x, i) => s + x * b[i], 0);
+
+function matMul(A: number[][], B: number[][]): number[][] {
+  const n = A.length;
+  const k = B.length;
+  const m = B[0].length;
+  const C = Array.from({ length: n }, () => new Array(m).fill(0));
+  for (let i = 0; i < n; i++)
+    for (let l = 0; l < k; l++) {
+      const a = A[i][l];
+      if (a === 0) continue;
+      for (let j = 0; j < m; j++) C[i][j] += a * B[l][j];
+    }
+  return C;
+}
 
 // ---- Promotion gate -------------------------------------------------------
 
