@@ -125,6 +125,27 @@ export default function Home() {
             })}
           </div>
 
+          {/* Augmentation callout — the temporal stress-test */}
+          <Link
+            href="/lab/timeline"
+            className="group mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-accent/40 bg-accent-soft p-5 transition-colors hover:border-accent"
+          >
+            <div>
+              <div className="font-display text-base font-semibold text-ink">
+                Augmentation · The buyer is a moving target
+              </div>
+              <p className="mt-1 text-sm text-muted">
+                One IT buyer sampled every 6 months, 2023→2026 (grounded in dated
+                sources). As AI sentiment drifts, the winning message rotates:
+                capability → ROI → results-not-tokens. Plus an out-of-sample
+                holdout A/B of today&rsquo;s champion.
+              </p>
+            </div>
+            <span className="text-sm font-medium text-accent group-hover:underline">
+              See the timeline →
+            </span>
+          </Link>
+
           {/* Rigor callout — the eval scorecard */}
           <Link
             href="/lab/evals"

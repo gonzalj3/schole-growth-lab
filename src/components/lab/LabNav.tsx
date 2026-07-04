@@ -9,6 +9,7 @@ const LINKS = [
   { href: '/lab/behavior', label: 'behavior' },
   { href: '/lab/attribution', label: 'attribution' },
   { href: '/lab/generate', label: 'generate' },
+  { href: '/lab/timeline', label: 'timeline' },
   { href: '/lab/evals', label: 'evals' },
 ];
 
