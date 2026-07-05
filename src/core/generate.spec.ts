@@ -6,7 +6,7 @@ import { AUDIENCE_MIXES } from './personas';
 import { bodySections } from './render';
 import { expectedRewardUnderMix } from './simulate';
 
-const genCfg = { mixKey: 'roi_driven', genomes: 300, visitsPerGenome: 50, seed: 7, minSamples: 400 };
+const genCfg = { mixKey: 'roi_driven', genomes: 450, visitsPerGenome: 50, seed: 7, minSamples: 400 };
 
 describe('generateOffspring — recombines only promoted genes', () => {
   const { attribution, promotion } = runAttribution(genCfg);

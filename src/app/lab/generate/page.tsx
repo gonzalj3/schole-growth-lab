@@ -33,7 +33,7 @@ export default function GeneratePage() {
   const [seed, setSeed] = useState(7);
 
   const run = useMemo(
-    () => runGeneration({ mixKey, genomes: 300, visitsPerGenome: 50, seed, minSamples: 400 }),
+    () => runGeneration({ mixKey, genomes: 450, visitsPerGenome: 50, seed, minSamples: 400 }),
     [mixKey, seed],
   );
 
@@ -129,15 +129,21 @@ export default function GeneratePage() {
             </div>
             <div className="text-[11px] text-muted">expected/visit · simulated</div>
           </div>
-          <div className="rounded-2xl border border-positive/40 bg-positive/5 p-5">
-            <div className="text-xs text-positive">True lift</div>
-            <div className="tnum mt-1 text-2xl font-semibold text-positive">
-              {money(run.actualLift)}
+          {offspring.changes.length === 0 ? (
+            <div className="rounded-2xl border border-line bg-surface p-5">
+              <div className="text-xs text-muted">True lift</div>
+              <div className="mt-1 text-2xl font-semibold text-ink">Unchanged</div>
+              <div className="text-[11px] text-muted">champion already optimal</div>
             </div>
-            <div className="text-[11px] text-muted">
-              {(liftPct * 100).toFixed(1)}% · predicted {money(offspring.estimatedLift)}
+          ) : (
+            <div className="rounded-2xl border border-positive/40 bg-positive/5 p-5">
+              <div className="text-xs text-positive">True lift</div>
+              <div className="tnum mt-1 text-2xl font-semibold text-positive">
+                +{(liftPct * 100).toFixed(1)}%
+              </div>
+              <div className="text-[11px] text-muted">expected revenue per visit</div>
             </div>
-          </div>
+          )}
         </div>
         <p className="mt-2 text-xs text-muted">
           These are <em>expected revenue per visit inside the simulation</em> — a
@@ -178,11 +184,13 @@ export default function GeneratePage() {
               ))}
             </div>
           )}
-          <p className="mt-3 text-xs text-muted">
-            The true lift is {(liftPct * 100).toFixed(1)}% — it differs from the sum
-            of the individual gene effects because of interactions the main-effects
-            model can&rsquo;t see, stated honestly rather than hidden.
-          </p>
+          {offspring.changes.length > 0 && (
+            <p className="mt-3 text-xs text-muted">
+              The true lift is {(liftPct * 100).toFixed(1)}% — it differs from the sum
+              of the individual gene effects because of interactions the main-effects
+              model can&rsquo;t see, stated honestly rather than hidden.
+            </p>
+          )}
         </section>
 
         {/* Before & after — parent vs bred page, side by side */}

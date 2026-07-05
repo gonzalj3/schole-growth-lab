@@ -28,7 +28,7 @@ describe('interpret — composes the whole story', () => {
   it('carries the offspring lift numbers from generation', () => {
     const gen = runGeneration({
       mixKey: cfg.mixKey,
-      genomes: 300,
+      genomes: 450,
       visitsPerGenome: 50,
       seed: cfg.seed,
       minSamples: 400,

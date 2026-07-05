@@ -40,7 +40,7 @@ export function runHoldout(mixKey: string, opts: HoldoutOptions = {}): HoldoutRe
   const genSeed = opts.genSeed ?? 7;
 
   // Breed the canonical offspring once (in-sample), then validate out-of-sample.
-  const gen = runGeneration({ mixKey, genomes: 300, visitsPerGenome: 50, seed: genSeed, minSamples: 400 });
+  const gen = runGeneration({ mixKey, genomes: 450, visitsPerGenome: 50, seed: genSeed, minSamples: 400 });
   const parent: Genome = gen.base.genome;
   const offspring: Genome = gen.offspring.genome;
   const mix = AUDIENCE_MIXES[mixKey];
