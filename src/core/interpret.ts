@@ -49,10 +49,20 @@ export interface Narrative {
   caveats: string[];
 }
 
-const money = (v: number) =>
-  `${v < 0 ? '−' : ''}$${Math.abs(Math.round(v)).toLocaleString()}`;
 const pretty = (s: string) => s.replace(/_/g, ' ');
 const nameById = (id: string) => SEED_VARIANTS.find((v) => v.id === id)?.name ?? id;
+
+// Human-readable gene names, so nothing reads like a code variable.
+const GENE_LABEL: Record<string, string> = {
+  headline: 'the headline',
+  primaryCta: 'the call-to-action',
+  ctaStyle: 'the CTA style',
+  socialProof: 'the social proof',
+  tone: 'the tone',
+  length: 'the page length',
+  heroLayout: 'the hero layout',
+};
+const geneLabel = (g: string) => GENE_LABEL[g] ?? pretty(g);
 
 export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
   const { mixKey, seed } = cfg;
@@ -114,7 +124,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     offspring.changes.length === 0
       ? 'the champion already carried every proven allele, so it changed nothing — an honest no-op'
       : 'it swapped ' +
-        offspring.changes.map((c) => `${pretty(c.gene)} to “${pretty(c.to)}”`).join(', ');
+        offspring.changes.map((c) => `${geneLabel(c.gene)} to “${pretty(c.to)}”`).join(', ');
 
   const heldExample = heldBack[0]
     ? `${pretty(heldBack[0].gene)} (“${pretty(heldBack[0].allele)}”)`
@@ -149,11 +159,18 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     },
     {
       phase: 4,
-      title: `A bred page: +${(liftPct * 100).toFixed(1)}% expected revenue per visit`,
-      detail: `Starting from the champion (${offspring.parentName}), ${changesDesc}. It left every unproven gene untouched — no guessing. Attribution predicted ${money(
-        offspring.estimatedLift,
-      )}; the true lift was ${money(offspring.actualLift)} (${(liftPct * 100).toFixed(1)}%). The gap is unmodeled gene interactions, stated rather than hidden.`,
-      stat: `+${(liftPct * 100).toFixed(1)}% revenue`,
+      title:
+        offspring.changes.length === 0
+          ? `The champion is already optimal`
+          : `A bred page: +${(liftPct * 100).toFixed(1)}% expected revenue per visit`,
+      detail:
+        offspring.changes.length === 0
+          ? `Starting from the champion (${offspring.parentName}), ${changesDesc}. That restraint is the honest output — the system won’t swap a gene it can’t defend.`
+          : `Starting from the champion (${offspring.parentName}), ${changesDesc}. It left every unproven gene untouched — no guessing. The true lift was ${(liftPct * 100).toFixed(1)}% — it differs from the sum of the individual gene effects because of interactions the main-effects model can’t see, stated rather than hidden.`,
+      stat:
+        offspring.changes.length === 0
+          ? 'no change — restraint'
+          : `+${(liftPct * 100).toFixed(1)}% revenue`,
       href: '/lab/generate',
     },
   ];

@@ -156,29 +156,48 @@ export default function GeneratePage() {
             </div>
           )}
           <p className="mt-3 text-xs text-muted">
-            Predicted lift {money(offspring.estimatedLift)} vs true lift{' '}
-            {money(run.actualLift)} — the gap is the price of a main-effects model
-            (it ignores gene interactions), stated honestly rather than hidden.
+            The true lift is {(liftPct * 100).toFixed(1)}% — it differs from the sum
+            of the individual gene effects because of interactions the main-effects
+            model can&rsquo;t see, stated honestly rather than hidden.
           </p>
         </section>
 
-        {/* Live render of the offspring */}
+        {/* Before & after — parent vs bred page, side by side */}
         <section className="mt-10">
           <h2 className="font-display text-xl font-semibold text-ink">
-            The offspring, rendered
+            Before &amp; after
           </h2>
-          <p className="mt-1 text-sm text-muted">
-            A real page — not a mockup — assembled from the winning genes.
+          <p className="mt-1 max-w-3xl text-sm text-muted">
+            The champion the system started from, next to the page it bred — both
+            real, each rendered from its own genome.{' '}
+            {offspring.changes.length > 0
+              ? 'The differences are the proven changes listed above.'
+              : 'They are identical — the champion already carried every proven allele.'}
           </p>
-          <div className="mt-4 overflow-hidden rounded-2xl border border-line">
-            <div className="flex items-center gap-2 border-b border-line bg-surface px-4 py-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-negative/50" />
-              <span className="h-2.5 w-2.5 rounded-full bg-accent/50" />
-              <span className="h-2.5 w-2.5 rounded-full bg-positive/50" />
-              <span className="ml-2 text-[11px] text-muted">schole.ai/teams · generated</span>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            {/* Parent / original */}
+            <div className="overflow-hidden rounded-2xl border border-line">
+              <div className="flex items-center gap-2 border-b border-line bg-surface px-4 py-2">
+                <span className="rounded-full bg-ink px-2 py-0.5 text-[11px] font-medium text-white">
+                  Original
+                </span>
+                <span className="text-[11px] text-muted">{base.name} (champion)</span>
+              </div>
+              <div className="max-h-[75vh] overflow-y-auto">
+                <LandingPage genome={base.genome} />
+              </div>
             </div>
-            <div className="max-h-[80vh] overflow-y-auto">
-              <LandingPage genome={offspring.genome} />
+            {/* Offspring / generated */}
+            <div className="overflow-hidden rounded-2xl border-2 border-brand">
+              <div className="flex items-center gap-2 border-b border-brand/40 bg-brand-soft px-4 py-2">
+                <span className="rounded-full bg-brand px-2 py-0.5 text-[11px] font-medium text-white">
+                  Generated
+                </span>
+                <span className="text-[11px] text-brand">the page the system bred</span>
+              </div>
+              <div className="max-h-[75vh] overflow-y-auto">
+                <LandingPage genome={offspring.genome} />
+              </div>
             </div>
           </div>
         </section>

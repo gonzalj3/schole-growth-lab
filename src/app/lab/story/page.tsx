@@ -13,6 +13,15 @@ import { AUDIENCE_MIXES } from '@/core/personas';
 
 const MIXES = Object.keys(AUDIENCE_MIXES);
 const pretty = (s: string) => s.replace(/_/g, ' ');
+const GENE_LABEL: Record<string, string> = {
+  headline: 'headline',
+  primaryCta: 'CTA',
+  ctaStyle: 'CTA style',
+  socialProof: 'proof',
+  tone: 'tone',
+  length: 'length',
+  heroLayout: 'hero',
+};
 const money = (v: number) =>
   `${v < 0 ? '−' : '+'}$${Math.abs(Math.round(v)).toLocaleString()}`;
 
@@ -93,7 +102,7 @@ export default function StoryPage() {
                         key={c.gene}
                         className="flex items-center gap-1.5 rounded-md border border-line bg-surface px-2 py-1 text-xs"
                       >
-                        <span className="text-muted">{pretty(c.gene)}:</span>
+                        <span className="text-muted">{GENE_LABEL[c.gene] ?? pretty(c.gene)}:</span>
                         <span className="text-muted line-through">{pretty(c.from)}</span>
                         <span className="text-muted">→</span>
                         <span className="font-medium text-brand">{pretty(c.to)}</span>
