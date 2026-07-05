@@ -74,7 +74,10 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
     visitorsPerRound: 60,
     seed,
   });
-  const regretSaved = (uniform.regretCurve.at(-1) ?? 0) - (exp.regretCurve.at(-1) ?? 0);
+  const banditRegret = exp.regretCurve.at(-1) ?? 0;
+  const uniformRegret = uniform.regretCurve.at(-1) ?? 0;
+  const regretSaved = uniformRegret - banditRegret;
+  const regretRatio = uniformRegret > 0 ? banditRegret / uniformRegret : 0;
   const recovered = exp.empiricalBestId === exp.oracleBestId;
 
   // Phase 3 + 4: attribution, promotion, and the bred offspring.
@@ -124,7 +127,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
       detail:
         'We built six Scholé Teams concepts, each led by a different “why” — capability, ROI, trust, risk, control, and the AI value gap. This is a message test, not a button-color test: the winner tells us which reason to buy resonates.',
       stat: '6 concepts',
-      href: '/#variants',
+      href: '/variants',
     },
     {
       phase: 2,
@@ -133,7 +136,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
         recovered
           ? `Its winner matches the true best under this audience — the system recovered reality from noisy behavior.`
           : `Its winner is still within noise of the true best (${oracleName}) — honest about what the sample supports.`
-      } Learning this way instead of splitting traffic evenly saved ${money(regretSaved)} in lost revenue.`,
+      } Learning this way wastes only about ${Math.round(regretRatio * 100)}% of the reward a plain even split throws away on losers.`,
       stat: recovered ? 'recovered the true winner' : 'not yet separated',
       href: '/lab/experiment',
     },
