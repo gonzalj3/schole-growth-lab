@@ -4,9 +4,22 @@
 import { Section } from './Section';
 import { HOW_IT_WORKS_STEPS } from '@/core/genome';
 
-export function HowItWorks({ eyebrow, tint }: { eyebrow: string; tint?: boolean }) {
+export function HowItWorks({
+  eyebrow,
+  tint,
+  glowEyebrow = false,
+}: {
+  eyebrow: string;
+  tint?: boolean;
+  glowEyebrow?: boolean;
+}) {
   return (
-    <Section eyebrow={eyebrow} heading="From access to adoption in three steps" tint={tint}>
+    <Section
+      eyebrow={eyebrow}
+      heading="From access to adoption in three steps"
+      tint={tint}
+      glowEyebrow={glowEyebrow}
+    >
       <div className="grid gap-6 md:grid-cols-3">
         {HOW_IT_WORKS_STEPS.map((s, i) => (
           <div key={s.title} className="relative">

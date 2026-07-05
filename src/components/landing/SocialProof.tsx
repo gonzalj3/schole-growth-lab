@@ -11,16 +11,18 @@ export function SocialProof({
   eyebrow,
   tint,
   glow = false,
+  glowEyebrow = false,
 }: {
   kind: SocialProofKind;
   eyebrow: string;
   tint?: boolean;
   glow?: boolean;
+  glowEyebrow?: boolean;
 }) {
   const { label, items } = SOCIAL_PROOF_COPY[kind];
 
   return (
-    <Section eyebrow={eyebrow} heading={label} tint={tint} glow={glow}>
+    <Section eyebrow={eyebrow} heading={label} tint={tint} glow={glow} glowEyebrow={glowEyebrow}>
       {kind === 'company_logos' && (
         <div className="flex flex-wrap items-center gap-3">
           {items.map((it) => (

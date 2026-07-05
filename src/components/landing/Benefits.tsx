@@ -4,9 +4,22 @@
 import { Section } from './Section';
 import { BENEFIT_CARDS } from '@/core/genome';
 
-export function Benefits({ eyebrow, tint }: { eyebrow: string; tint?: boolean }) {
+export function Benefits({
+  eyebrow,
+  tint,
+  glowEyebrow = false,
+}: {
+  eyebrow: string;
+  tint?: boolean;
+  glowEyebrow?: boolean;
+}) {
   return (
-    <Section eyebrow={eyebrow} heading="Built for how your team actually works" tint={tint}>
+    <Section
+      eyebrow={eyebrow}
+      heading="Built for how your team actually works"
+      tint={tint}
+      glowEyebrow={glowEyebrow}
+    >
       <div className="grid gap-5 md:grid-cols-3">
         {BENEFIT_CARDS.map((c) => (
           <div

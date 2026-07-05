@@ -33,15 +33,20 @@ export function LandingPage({
   const sections = bodySections(genome);
   const changed = new Set(highlight);
   const glowCta = changed.has('ctaStyle') || changed.has('primaryCta');
+  const glowTone = changed.has('tone'); // tone shows in section eyebrows + final CTA
 
   // Alternate tinted backgrounds down the page for rhythm — computed by the
   // position each section actually lands in, not its identity.
   const renderSection = (kind: SectionKind, tint: boolean) => {
     switch (kind) {
       case 'benefits':
-        return <Benefits key={kind} eyebrow={tone.benefitsIntro} tint={tint} />;
+        return (
+          <Benefits key={kind} eyebrow={tone.benefitsIntro} tint={tint} glowEyebrow={glowTone} />
+        );
       case 'howItWorks':
-        return <HowItWorks key={kind} eyebrow={tone.howItWorksIntro} tint={tint} />;
+        return (
+          <HowItWorks key={kind} eyebrow={tone.howItWorksIntro} tint={tint} glowEyebrow={glowTone} />
+        );
       case 'proof':
         return (
           <SocialProof
@@ -50,6 +55,7 @@ export function LandingPage({
             eyebrow={tone.proofIntro}
             tint={tint}
             glow={changed.has('socialProof')}
+            glowEyebrow={glowTone}
           />
         );
       case 'credibility':

@@ -7,12 +7,14 @@ export function Section({
   children,
   tint = false,
   glow = false,
+  glowEyebrow = false,
 }: {
   eyebrow?: string;
   heading?: string;
   children: React.ReactNode;
   tint?: boolean;
   glow?: boolean;
+  glowEyebrow?: boolean;
 }) {
   return (
     <section className={tint ? 'border-y border-line bg-surface/60' : ''}>
@@ -20,7 +22,11 @@ export function Section({
         {(eyebrow || heading) && (
           <div className="mb-10 max-w-2xl">
             {eyebrow && (
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">
+              <div
+                className={`mb-2 inline-block text-xs font-semibold uppercase tracking-wider text-accent ${
+                  glowEyebrow ? 'hl-glow px-2 py-1' : ''
+                }`}
+              >
                 {eyebrow}
               </div>
             )}
