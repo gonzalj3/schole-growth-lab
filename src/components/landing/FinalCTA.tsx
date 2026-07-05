@@ -8,15 +8,17 @@ export function FinalCTA({
   sub,
   primaryCtaLabel,
   secondaryCtaLabel,
+  glow = false,
 }: {
   headline: string;
   sub: string;
   primaryCtaLabel: string;
   secondaryCtaLabel?: string;
+  glow?: boolean;
 }) {
   return (
     <section className="border-t border-line bg-ink">
-      <div className="mx-auto max-w-4xl px-6 py-20 text-center">
+      <div className={`mx-auto max-w-4xl px-6 py-20 text-center ${glow ? 'hl-glow' : ''}`}>
         <h2 className="font-display text-3xl font-semibold text-white sm:text-4xl">
           {headline}
         </h2>

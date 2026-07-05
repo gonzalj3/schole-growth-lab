@@ -17,12 +17,22 @@ import { Credibility } from './Credibility';
 import { Pricing } from './Pricing';
 import { FinalCTA } from './FinalCTA';
 
-export function LandingPage({ genome }: { genome: Genome }) {
+export function LandingPage({
+  genome,
+  highlight = [],
+}: {
+  genome: Genome;
+  // Gene names to highlight (pulsing ring) — used on the before/after view so a
+  // reviewer can see exactly where the bred page differs.
+  highlight?: string[];
+}) {
   const h = HEADLINE_COPY[genome.headline];
   const primaryCtaLabel = CTA_COPY[genome.primaryCta];
   const secondaryCtaLabel = hasSecondaryCta(genome) ? SECONDARY_CTA_COPY : undefined;
   const tone = TONE_COPY[genome.tone];
   const sections = bodySections(genome);
+  const changed = new Set(highlight);
+  const glowCta = changed.has('ctaStyle') || changed.has('primaryCta');
 
   // Alternate tinted backgrounds down the page for rhythm — computed by the
   // position each section actually lands in, not its identity.
@@ -39,6 +49,7 @@ export function LandingPage({ genome }: { genome: Genome }) {
             kind={genome.socialProof}
             eyebrow={tone.proofIntro}
             tint={tint}
+            glow={changed.has('socialProof')}
           />
         );
       case 'credibility':
@@ -58,6 +69,8 @@ export function LandingPage({ genome }: { genome: Genome }) {
         layout={genome.heroLayout}
         primaryCtaLabel={primaryCtaLabel}
         secondaryCtaLabel={secondaryCtaLabel}
+        glowHeadline={changed.has('headline')}
+        glowCta={glowCta}
       />
       {sections.map((kind, i) => renderSection(kind, i % 2 === 1))}
       <FinalCTA
@@ -65,6 +78,7 @@ export function LandingPage({ genome }: { genome: Genome }) {
         sub={tone.finalSub}
         primaryCtaLabel={primaryCtaLabel}
         secondaryCtaLabel={secondaryCtaLabel}
+        glow={glowCta || changed.has('tone')}
       />
     </div>
   );

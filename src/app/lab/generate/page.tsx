@@ -5,7 +5,7 @@
 // informed offspring from the gate-cleared alleles → render it as a real page.
 // Shows estimated lift (attribution) vs actual lift (oracle) — the honesty check.
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { AUDIENCE_MIXES } from '@/core/personas';
 import { runGeneration } from '@/core/generate';
@@ -39,6 +39,29 @@ export default function GeneratePage() {
 
   const { base, offspring } = run;
   const liftPct = run.baseExpectedReward > 0 ? run.actualLift / run.baseExpectedReward : 0;
+  const changedGenes = offspring.changes.map((c) => c.gene);
+
+  // Auto-scroll each before/after frame to the first highlighted (changed) element.
+  const origRef = useRef<HTMLDivElement>(null);
+  const genRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const scrollToGlow = (container: HTMLDivElement | null) => {
+      if (!container) return;
+      const el = container.querySelector('.hl-glow') as HTMLElement | null;
+      if (!el) {
+        container.scrollTop = 0;
+        return;
+      }
+      const top =
+        el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+      container.scrollTop = Math.max(0, top - container.clientHeight / 2 + el.clientHeight / 2);
+    };
+    const t = setTimeout(() => {
+      scrollToGlow(origRef.current);
+      scrollToGlow(genRef.current);
+    }, 350);
+    return () => clearTimeout(t);
+  }, [run]);
 
   return (
     <main className="min-h-screen">
@@ -171,7 +194,7 @@ export default function GeneratePage() {
             The champion the system started from, next to the page it bred — both
             real, each rendered from its own genome.{' '}
             {offspring.changes.length > 0
-              ? 'The differences are the proven changes listed above.'
+              ? 'Each frame auto-scrolls to the first change, which glows.'
               : 'They are identical — the champion already carried every proven allele.'}
           </p>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
@@ -183,8 +206,8 @@ export default function GeneratePage() {
                 </span>
                 <span className="text-[11px] text-muted">{base.name} (champion)</span>
               </div>
-              <div className="max-h-[75vh] overflow-y-auto">
-                <LandingPage genome={base.genome} />
+              <div ref={origRef} className="max-h-[75vh] overflow-y-auto">
+                <LandingPage genome={base.genome} highlight={changedGenes} />
               </div>
             </div>
             {/* Offspring / generated */}
@@ -195,8 +218,8 @@ export default function GeneratePage() {
                 </span>
                 <span className="text-[11px] text-brand">the page the system bred</span>
               </div>
-              <div className="max-h-[75vh] overflow-y-auto">
-                <LandingPage genome={offspring.genome} />
+              <div ref={genRef} className="max-h-[75vh] overflow-y-auto">
+                <LandingPage genome={offspring.genome} highlight={changedGenes} />
               </div>
             </div>
           </div>
