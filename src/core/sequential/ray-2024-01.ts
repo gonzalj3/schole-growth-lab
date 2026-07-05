@@ -23,7 +23,7 @@ export const ray_2024_01: TimedPersona = {
   why: 'Make the pilots solve a real problem.',
   willingnessToBuy: 3,
   preferredAction: 'book_demo',
-  conversionValue: { book_demo: 8000, get_diagnostic: 3000, get_pricing: 1200, none: 0 },
+  conversionValue: { book_demo: 400, get_diagnostic: 150, get_pricing: 60, none: 0 },
   weights: {
     headline: { team_capability: 0.7, measurable_adoption: 0.5, admin_control: 0.4, research_credibility: 0.3, governance_ready: 0.2, value_realization: -0.2 },
     primaryCta: { book_demo: 0.6, get_diagnostic: 0.5, get_pricing: 0.2 },

@@ -23,7 +23,7 @@ export const ray_2024_07: TimedPersona = {
   why: "Where's the value? I have to justify the spend.",
   willingnessToBuy: 4,
   preferredAction: 'book_demo',
-  conversionValue: { book_demo: 9000, get_diagnostic: 3500, get_pricing: 1800, none: 0 },
+  conversionValue: { book_demo: 450, get_diagnostic: 175, get_pricing: 90, none: 0 },
   weights: {
     headline: { measurable_adoption: 0.9, admin_control: 0.5, team_capability: 0.4, research_credibility: 0.4, governance_ready: 0.3, value_realization: 0.2 },
     primaryCta: { book_demo: 0.8, get_diagnostic: 0.6, get_pricing: 0.4 },

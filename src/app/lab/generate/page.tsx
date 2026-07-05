@@ -33,7 +33,7 @@ export default function GeneratePage() {
   const [seed, setSeed] = useState(7);
 
   const run = useMemo(
-    () => runGeneration({ mixKey, genomes: 200, visitsPerGenome: 45, seed, minSamples: 400 }),
+    () => runGeneration({ mixKey, genomes: 300, visitsPerGenome: 50, seed, minSamples: 400 }),
     [mixKey, seed],
   );
 

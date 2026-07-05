@@ -55,7 +55,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     why: 'Reshape our learning strategy and prove measurable adoption to leadership.',
     grounding: "Scholé's Decathlon Switzerland engagement; Harvard People-Development partnership.",
     preferredAction: 'book_demo',
-    conversionValue: { book_demo: 15000, get_diagnostic: 4000, get_pricing: 2000, none: 0 },
+    conversionValue: { book_demo: 700, get_diagnostic: 250, get_pricing: 130, none: 0 },
   },
   ops_leader: {
     id: 'ops_leader',
@@ -64,7 +64,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     why: 'Inconsistency in support/sales/onboarding costs us money. Show me the ROI.',
     grounding: 'Product Hunt feedback that ops teams are the real opportunity — they see a process problem, want outcomes not theory.',
     preferredAction: 'book_demo',
-    conversionValue: { book_demo: 12000, get_diagnostic: 3500, get_pricing: 2500, none: 0 },
+    conversionValue: { book_demo: 600, get_diagnostic: 220, get_pricing: 160, none: 0 },
   },
   compliance_buyer: {
     id: 'compliance_buyer',
@@ -73,7 +73,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     why: 'Get us from AI awareness to measurable, compliant adoption before the regulation bites.',
     grounding: "Scholé's EU AI Act Article 4 support and 'measurable adoption' messaging.",
     preferredAction: 'book_demo',
-    conversionValue: { book_demo: 13000, get_diagnostic: 3000, get_pricing: 2000, none: 0 },
+    conversionValue: { book_demo: 650, get_diagnostic: 200, get_pricing: 130, none: 0 },
   },
   security_skeptic: {
     id: 'security_skeptic',
@@ -82,7 +82,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     why: "Don't get burned by an immature vendor — show me proof, security, and evals.",
     grounding: 'Public Product Hunt reviewer who wanted architecture, security docs, and eval metrics before trusting it as enterprise-ready.',
     preferredAction: 'book_demo',
-    conversionValue: { book_demo: 10000, get_diagnostic: 2000, get_pricing: 1500, none: 0 },
+    conversionValue: { book_demo: 500, get_diagnostic: 140, get_pricing: 100, none: 0 },
   },
 };
 

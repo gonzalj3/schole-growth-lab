@@ -23,7 +23,7 @@ export const ray_2026_07: TimedPersona = {
   why: 'Make the AI we already bought finally pay off — and let us own it.',
   willingnessToBuy: 4, // high, but vendor-skeptical: Scholé must not read as "another AI tool"
   preferredAction: 'book_demo',
-  conversionValue: { book_demo: 14000, get_diagnostic: 4500, get_pricing: 2800, none: 0 },
+  conversionValue: { book_demo: 700, get_diagnostic: 225, get_pricing: 140, none: 0 },
   weights: {
     headline: { value_realization: 1.3, measurable_adoption: 1.0, admin_control: 0.9, research_credibility: 0.6, governance_ready: 0.6, team_capability: -0.5 },
     primaryCta: { book_demo: 1.0, get_diagnostic: 0.7, get_pricing: 0.6 },

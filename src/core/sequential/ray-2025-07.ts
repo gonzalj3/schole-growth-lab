@@ -23,7 +23,7 @@ export const ray_2025_07: TimedPersona = {
   why: 'The gap is US, not the model. Fix adoption.',
   willingnessToBuy: 5, // the most-cited report just diagnosed Scholé's wedge
   preferredAction: 'get_diagnostic',
-  conversionValue: { book_demo: 12000, get_diagnostic: 4200, get_pricing: 2500, none: 0 },
+  conversionValue: { book_demo: 600, get_diagnostic: 210, get_pricing: 125, none: 0 },
   weights: {
     headline: { measurable_adoption: 1.2, admin_control: 0.8, value_realization: 0.6, research_credibility: 0.5, governance_ready: 0.5, team_capability: -0.1 },
     primaryCta: { book_demo: 0.9, get_diagnostic: 0.8, get_pricing: 0.5 },

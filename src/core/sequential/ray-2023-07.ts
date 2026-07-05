@@ -23,7 +23,7 @@ export const ray_2023_07: TimedPersona = {
   why: "Don't fall behind — the board wants an AI story.",
   willingnessToBuy: 2,
   preferredAction: 'get_diagnostic',
-  conversionValue: { book_demo: 6000, get_diagnostic: 2500, get_pricing: 800, none: 0 },
+  conversionValue: { book_demo: 300, get_diagnostic: 125, get_pricing: 40, none: 0 },
   weights: {
     headline: { team_capability: 0.9, admin_control: 0.2, research_credibility: 0.2, measurable_adoption: 0.1, governance_ready: 0.1, value_realization: -0.5 },
     primaryCta: { get_diagnostic: 0.5, book_demo: 0.3, get_pricing: 0.0 },

@@ -11,7 +11,7 @@ const base: ExperimentConfig = {
 
 describe('rewardMax', () => {
   it('is the largest conversion value across the committee (lnd_leader demo)', () => {
-    expect(rewardMax()).toBe(15000);
+    expect(rewardMax()).toBe(700);
   });
 });
 

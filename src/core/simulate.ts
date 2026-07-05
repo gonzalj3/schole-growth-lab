@@ -46,7 +46,7 @@ export interface Visit {
 
 // action logits
 const A_UTIL = 1.0; // how strongly utility pushes toward converting
-const NONE_BASE = 3.6; // baseline "do nothing" logit → conversion is a minority
+const NONE_BASE = 6; // baseline "do nothing" logit → realistic conversion (~6-20%)
 const PREF_BONUS = 0.5; // a persona is likelier to take its preferred action
 // lower-friction asks convert more readily than a high-commitment demo
 const FRICTION_BONUS: Record<ConversionAction, number> = {

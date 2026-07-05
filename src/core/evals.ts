@@ -100,8 +100,8 @@ export interface EvalOptions {
 export function runEvals(opts: EvalOptions = {}): Scorecard {
   const mixKey = opts.mixKey ?? 'roi_driven';
   const seeds = opts.seeds ?? Array.from({ length: 12 }, (_, i) => i + 1);
-  const genomes = opts.genomes ?? 150;
-  const visitsPerGenome = opts.visitsPerGenome ?? 35;
+  const genomes = opts.genomes ?? 220;
+  const visitsPerGenome = opts.visitsPerGenome ?? 45;
   const truth = trueEffects(mixKey);
 
   let armHits = 0;

@@ -53,7 +53,7 @@ const geneOf = (att: Attribution, gene: string) =>
 describe('attribution recovers the true effect on revenue', () => {
   const { attribution } = runAttribution({
     mixKey: 'roi_driven',
-    genomes: 160,
+    genomes: 240,
     visitsPerGenome: 50,
     seed: 7,
   });

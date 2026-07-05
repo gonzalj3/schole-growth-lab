@@ -23,7 +23,7 @@ export const ray_2026_01: TimedPersona = {
   why: 'ROI via adoption + governance, or it does not ship.',
   willingnessToBuy: 4,
   preferredAction: 'book_demo',
-  conversionValue: { book_demo: 13000, get_diagnostic: 4000, get_pricing: 2600, none: 0 },
+  conversionValue: { book_demo: 650, get_diagnostic: 200, get_pricing: 130, none: 0 },
   weights: {
     headline: { measurable_adoption: 1.1, admin_control: 0.9, governance_ready: 0.9, value_realization: 0.8, research_credibility: 0.6, team_capability: -0.2 },
     primaryCta: { book_demo: 1.0, get_pricing: 0.6, get_diagnostic: 0.6 },

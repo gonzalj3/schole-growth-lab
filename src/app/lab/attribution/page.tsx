@@ -63,7 +63,7 @@ export default function AttributionPage() {
   const [seed, setSeed] = useState(7);
 
   const run = useMemo(
-    () => runAttribution({ mixKey, genomes: 200, visitsPerGenome: 45, seed, minSamples: 400 }),
+    () => runAttribution({ mixKey, genomes: 300, visitsPerGenome: 50, seed, minSamples: 400 }),
     [mixKey, seed],
   );
   const truth = useMemo(() => trueEffects(mixKey), [mixKey]);

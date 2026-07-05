@@ -78,7 +78,7 @@ export function interpret(cfg: { mixKey: string; seed: number }): Narrative {
   const recovered = exp.empiricalBestId === exp.oracleBestId;
 
   // Phase 3 + 4: attribution, promotion, and the bred offspring.
-  const gen = runGeneration({ mixKey, genomes: 200, visitsPerGenome: 45, seed, minSamples: 400 });
+  const gen = runGeneration({ mixKey, genomes: 300, visitsPerGenome: 50, seed, minSamples: 400 });
 
   const winnerGenome = SEED_VARIANTS.find((v) => v.id === exp.empiricalBestId)!.genome;
   const winnerWhy = HEADLINE_COPY[winnerGenome.headline].why;
